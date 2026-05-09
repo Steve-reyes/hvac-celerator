@@ -1,0 +1,58 @@
+import type { AgencyAccount } from "@/types/database"
+
+export const MOCK_CLIENTS: AgencyAccount[] = [
+  {
+    id: "c1",
+    name: "Premier HVAC Solutions",
+    slug: "premier-hvac",
+    avgMapPackRank: 3.2,
+    reviewScore: 4.7,
+    monthlyLeadCount: 142,
+    website: "https://premierhvac.com",
+  },
+  {
+    id: "c2",
+    name: "Arctic Chill HVAC",
+    slug: "arctic-chill",
+    avgMapPackRank: 4.1,
+    reviewScore: 4.3,
+    monthlyLeadCount: 98,
+    website: "https://arctichill.com",
+  },
+  {
+    id: "c3",
+    name: "Desert Air Conditioning",
+    slug: "desert-air",
+    avgMapPackRank: 2.8,
+    reviewScore: 4.9,
+    monthlyLeadCount: 215,
+    website: "https://desertairco.com",
+  },
+  {
+    id: "c4",
+    name: "Summit Mechanical",
+    slug: "summit-mechanical",
+    avgMapPackRank: 5.3,
+    reviewScore: 4.1,
+    monthlyLeadCount: 67,
+    website: "https://summitmech.com",
+  },
+  {
+    id: "c5",
+    name: "Coastline Refrigeration",
+    slug: "coastline-refrig",
+    avgMapPackRank: 3.7,
+    reviewScore: 4.5,
+    monthlyLeadCount: 178,
+    website: "https://coastlinerefrig.com",
+  },
+  {
+    id: "c6",
+    name: "Liberty Heating & Cooling",
+    slug: "liberty-hvac",
+    avgMapPackRank: 6.0,
+    reviewScore: 3.9,
+    monthlyLeadCount: 45,
+    website: "https://libertyhvac.com",
+  },
+]

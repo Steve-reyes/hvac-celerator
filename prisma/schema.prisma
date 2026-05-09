@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  STAFF
+}
+
+model Agency {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  logoUrl   String?
+  brandColor String  @default("#FF6B00")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profiles Profile[]
+  clients  Client[]
+  branding AgencyBranding?
+}
+
+model AgencyBranding {
+  id           String @id @default(cuid())
+  agencyId     String @unique
+  logoUrl      String?
+  primaryColor String @default("#FF6B00")
+  fontFamily   String @default("Inter")
+  reportHeader String?
+  reportFooter String?
+
+  agency Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  agencyId  String
+  role      UserRole @default(STAFF)
+  fullName  String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  agency Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+}
+
+model Client {
+  id               String   @id @default(cuid())
+  agencyId         String
+  name             String
+  slug             String
+  website          String?
+  phone            String?
+  address          String?
+  logoUrl          String?
+  avgMapPackRank   Float?
+  reviewScore      Float?
+  monthlyLeadCount Int?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  agency        Agency         @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  rankings      Ranking[]
+  serviceAreas  ServiceArea[]
+  competitors   Competitor[]
+  keywordGaps   KeywordGap[]
+  contentPosts  ContentPost[]
+
+  @@unique([agencyId, slug])
+}
+
+model Ranking {
+  id        String   @id @default(cuid())
+  clientId  String
+  keyword   String
+  rank      Int
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId, date])
+  @@index([clientId, keyword])
+}
+
+model ServiceArea {
+  id        String   @id @default(cuid())
+  clientId  String
+  name      String
+  latitude  Float
+  longitude Float
+  radius    Float?
+  createdAt DateTime @default(now())
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+}
+
+model Competitor {
+  id        String   @id @default(cuid())
+  clientId  String
+  name      String
+  website   String?
+  createdAt DateTime @default(now())
+
+  client      Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  keywordGaps KeywordGap[]
+
+  @@unique([clientId, name])
+}
+
+model KeywordGap {
+  id           String  @id @default(cuid())
+  clientId     String
+  entityName   String
+  isClient     Boolean @default(true)
+  strength     Int     @default(0)
+  competitorId String?
+
+  client     Client?     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  competitor Competitor? @relation(fields: [competitorId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+}
+
+model ContentPost {
+  id          String    @id @default(cuid())
+  clientId    String
+  service     String
+  targetCity  String
+  headline    String?
+  body        String?
+  cta         String?
+  status      String    @default("draft")
+  createdAt   DateTime  @default(now())
+  publishedAt DateTime?
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+}
