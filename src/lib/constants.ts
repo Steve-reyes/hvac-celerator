@@ -8,6 +8,7 @@ export const APP_ROUTES = {
   DASHBOARD: "/dashboard",
   ACCOUNTS: "/dashboard/accounts",
   KEYWORDS: "/dashboard/keywords",
+  KEYWORD_RESEARCH: "/dashboard/keyword-research",
   LOCAL_SEO: "/dashboard/local-seo",
   LOCAL_SEO_CLIENT: (id: string) => `/dashboard/accounts/${id}/local-seo`,
   CLIENT: (id: string) => `/dashboard/accounts/${id}`,
