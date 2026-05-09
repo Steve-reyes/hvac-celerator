@@ -395,7 +395,27 @@ export default function KeywordsPage() {
                     const ranking = rankings.find((r) => r.keyword === keyword)
                     return (
                       <TableRow key={keyword}>
-                        <TableCell className="font-medium">{keyword}</TableCell>
+                        <TableCell className="font-medium">
+                          <div className="flex items-center gap-2">
+                            <Link
+                              href={APP_ROUTES.KEYWORD_GRAPH(clientId, keyword)}
+                              className="hover:text-[#FF6B00] transition-colors"
+                            >
+                              {keyword}
+                            </Link>
+                            <a
+                              href={`https://www.google.com/search?q=${encodeURIComponent(accountCity ? `${keyword} ${accountCity}` : keyword)}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-zinc-600 hover:text-[#FF6B00] transition-colors"
+                              title="View on Google SERP"
+                            >
+                              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                              </svg>
+                            </a>
+                          </div>
+                        </TableCell>
                         <TableCell>
                           {ranking ? (
                             <RankCell rank={ranking.rank} rank7daysAgo={ranking.rank7daysAgo} />
