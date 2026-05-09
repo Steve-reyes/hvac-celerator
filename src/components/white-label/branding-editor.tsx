@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { buildCSSVariables } from "@/services/white-label"
 import { DEFAULT_WHITE_LABEL } from "@/services/white-label"
 import type { WhiteLabelConfig } from "@/types/database"
-import { Palette, RotateCcw, Code } from "lucide-react"
+import { RotateCcw, Code } from "lucide-react"
 
 export function BrandingEditor() {
   const [config, setConfig] = useState<WhiteLabelConfig>(DEFAULT_WHITE_LABEL)

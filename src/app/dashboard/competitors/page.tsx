@@ -11,9 +11,9 @@ import { cn } from "@/lib/utils"
 import { TrendChart, formatTraffic } from "@/components/competitors/trend-chart"
 import { loadCompetitors, addCompetitor, removeCompetitor, getClientMetrics, type Competitor } from "@/lib/competitor-storage"
 import {
-  Building2, Globe, Search, Plus, Trash2, TrendingUp, TrendingDown,
-  BarChart3, ExternalLink, Target, Eye, Star, Shield, Hash, Users, DollarSign,
-  ArrowUp, ArrowDown, Minus, MapPin, Check, Loader2
+  Building2, Globe, Search, Plus, Trash2, TrendingUp,
+  BarChart3, ExternalLink, Target, Star, Shield, Hash,
+  ArrowUp, ArrowDown, Minus, MapPin, Check
 } from "lucide-react"
 
 const COLORS = ["#FF6B00", "#34d399", "#60a5fa", "#f472b6", "#fbbf24", "#a78bfa"]
@@ -25,7 +25,7 @@ export default function CompetitorsPage() {
   const [newName, setNewName] = useState("")
   const [newDomain, setNewDomain] = useState("")
   const [addError, setAddError] = useState("")
-  const [predictions, setPredictions] = useState<any[]>([])
+  const [predictions, setPredictions] = useState<{ placeId: string; mainText: string; secondaryText: string; description: string }[]>([])
   const [selectedPlace, setSelectedPlace] = useState<{ placeId: string; name: string; address: string } | null>(null)
   const [client, setClient] = useState<{ name: string; metrics: ReturnType<typeof getClientMetrics> } | null>(null)
 
@@ -350,7 +350,7 @@ export default function CompetitorsPage() {
               </div>
               {predictions.length > 0 && !selectedPlace && (
                 <div className="absolute z-50 mt-1 w-full rounded-lg border border-zinc-800 bg-zinc-900 shadow-xl max-h-48 overflow-y-auto">
-                  {predictions.map((p: any, i: number) => (
+                  {predictions.map((p, i) => (
                     <button key={p.placeId} type="button"
                       className="w-full flex items-start gap-3 px-3 py-2.5 text-left hover:bg-zinc-800 transition-colors border-b border-zinc-800/50 last:border-0"
                       onClick={() => {

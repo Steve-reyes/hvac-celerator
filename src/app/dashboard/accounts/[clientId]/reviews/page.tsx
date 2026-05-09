@@ -25,7 +25,7 @@ function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg
   )
 }
 
-function RatingBar({ stars, count, percentage, total }: { stars: number; count: number; percentage: number; total: number }) {
+function RatingBar({ stars, count, percentage }: { stars: number; count: number; percentage: number; total: number }) {
   return (
     <div className="flex items-center gap-2 group cursor-pointer">
       <span className="text-sm w-4 text-zinc-400">{stars}</span>

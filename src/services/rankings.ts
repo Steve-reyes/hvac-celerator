@@ -1,7 +1,7 @@
 import { MAP_PACK_KEYWORDS } from "@/lib/constants"
 import type { HeatmapCell } from "@/types/database"
 
-export function generateHeatmapData(clientId: string): HeatmapCell[] {
+export function generateHeatmapData(_clientId: string): HeatmapCell[] {
   return MAP_PACK_KEYWORDS.map((keyword) => ({
     keyword,
     rank: Math.floor(Math.random() * 20) + 1,

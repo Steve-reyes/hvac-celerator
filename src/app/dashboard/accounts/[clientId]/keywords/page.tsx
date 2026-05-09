@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import {
   ArrowLeft, MapPin, TrendingUp, TrendingDown, Minus, Hash,
   Clock, Crosshair, ArrowUp, ArrowDown, Plus, Pencil, Trash2, Search, AlertCircle,
-  ArrowUpDown, ArrowUpNarrowWide, ArrowDownNarrowWide, BarChart3, ExternalLink, Upload, FileText, X
+  ArrowUpDown, ArrowUpNarrowWide, ArrowDownNarrowWide, BarChart3, Upload, FileText
 } from "lucide-react"
 import { getRankColor, getRankLabel } from "@/services/rankings"
 import { HVAC_KEYWORD_POOL } from "@/services/seo-scanner"

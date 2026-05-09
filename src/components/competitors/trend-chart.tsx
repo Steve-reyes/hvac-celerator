@@ -11,7 +11,7 @@ export function TrendChart({
   data: Record<string, string | number>[]
   series: { key: string; name: string; color: string }[]
   yLabel: string
-  domain: any
+  domain: [number | string, number | string]
   yFormat?: (v: number) => string
 }) {
   return (
@@ -20,7 +20,7 @@ export function TrendChart({
         <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
           <XAxis dataKey="date" tick={{ fill: "#a1a1aa", fontSize: 10 }} tickLine={false} axisLine={{ stroke: "#27272a" }} />
-          <YAxis domain={domain} tick={{ fill: "#a1a1aa", fontSize: 10 }} tickLine={false} axisLine={{ stroke: "#27272a" }} tickFormatter={yFormat || ((v: any) => `${v}`)} />
+          <YAxis domain={domain as [number, number]} tick={{ fill: "#a1a1aa", fontSize: 10 }} tickLine={false} axisLine={{ stroke: "#27272a" }} tickFormatter={yFormat as ((v: number) => string) || ((v: number) => `${v}`)} />
           <Tooltip contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: "8px", fontSize: "12px" }} labelStyle={{ color: "#a1a1aa" }} />
           <Legend wrapperStyle={{ fontSize: "10px", color: "#a1a1aa" }} formatter={(v) => <span style={{ color: "#d4d4d8" }}>{v}</span>} />
           {series.map((s) => (

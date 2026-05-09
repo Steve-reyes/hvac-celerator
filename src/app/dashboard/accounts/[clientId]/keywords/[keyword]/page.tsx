@@ -11,8 +11,8 @@ import { getRankLabel } from "@/services/rankings"
 import { getKeywordHistory, getAccountWithCity } from "@/lib/keywords-storage"
 import { cn } from "@/lib/utils"
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, ReferenceLine, Area, AreaChart
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, ReferenceLine
 } from "recharts"
 
 export default function KeywordGraphPage() {

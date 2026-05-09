@@ -17,7 +17,7 @@ import { useAuth } from "@/components/auth/auth-context"
 import { PlacePicker, type PlaceSelection } from "@/components/accounts/place-picker"
 import {
   Eye, Plus, Building2, MapPin, Star, TrendingUp, Trash2,
-  ScanSearch, Pencil, RefreshCw, CheckCircle2, AlertCircle, ExternalLink
+  ScanSearch, Pencil, RefreshCw, CheckCircle2, AlertCircle
 } from "lucide-react"
 
 interface ManagedAccount {

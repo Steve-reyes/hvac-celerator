@@ -24,7 +24,7 @@ interface ContentGeneratorProps {
   clientName: string
 }
 
-export function ContentGenerator({ clientId, clientName }: ContentGeneratorProps) {
+export function ContentGenerator({ clientId: _clientId, clientName }: ContentGeneratorProps) {
   const [selectedService, setSelectedService] = useState("")
   const [targetCity, setTargetCity] = useState("")
   const [generated, setGenerated] = useState<{ headline: string; body: string; cta: string } | null>(null)

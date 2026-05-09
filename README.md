@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# H-VAC-celerator
+
+Multi-tenant SEO management platform for HVAC agencies. Track rankings, analyze competitors, manage Google reviews, and generate GEO-optimized content — all in one place.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router) + TypeScript
+- **Styling:** Tailwind CSS v4 + Shadcn/UI
+- **Database:** PostgreSQL via Prisma 7 ORM
+- **Auth:** Supabase (with localStorage fallback for demo)
+- **Charts:** Recharts
+- **APIs:** Google Places API (reviews & autocomplete)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy `.env.example` to `.env.local` and configure:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | Description |
+|---|---|---|
+| `DATABASE_URL` | With Prisma | PostgreSQL connection string |
+| `GOOGLE_PLACES_API_KEY` | For live reviews | Google Places API key — get at [Google Cloud Console](https://console.cloud.google.com/apis/credentials) and enable the Places API |
+| `NEXT_PUBLIC_SUPABASE_URL` | With Supabase | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | With Supabase | Supabase anonymous key |
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
+- **Dashboard** — Multi-account executive overview with live stats
+- **Accounts** — Manage HVAC companies linked to Google Maps listings
+- **Keywords** — Tracked keyword management with bulk CSV/TXT import, position history graphs, sortable/searchable table
+- **Reviews** — Google Maps review data with rating distribution and paginated review cards
+- **Competitor Research** — Domain analysis, keyword gap comparison, traffic estimates, historical trends
+- **Content Engine** — AI-generated Google Business Profile posts with automated CTAs
+- **White-Label** — Customizable branding with live preview and CSS variable output
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Architecture
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/              # Next.js App Router pages & API routes
+├── components/       # React components (ui, layout, feature-specific)
+├── lib/              # Utilities, storage, Supabase/Prisma clients
+├── services/         # Business logic (scanners, generators, mock data)
+├── types/            # TypeScript type definitions
+└── generated/        # Prisma client (auto-generated)
+```
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+npm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The static prerendered routes work without a database. Dynamic routes (keyword graphs, reviews, competitor analysis) use localStorage for demo data — swap with Supabase/Prisma queries for production.

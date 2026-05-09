@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { MOCK_CLIENTS } from "@/services/mock-data"
 import { APP_ROUTES } from "@/lib/constants"
 import { ArrowUpRight, Grid3X3, BarChart3, FileText } from "lucide-react"
