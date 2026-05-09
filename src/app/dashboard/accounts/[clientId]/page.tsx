@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { MOCK_CLIENTS } from "@/services/mock-data"
 import { APP_ROUTES } from "@/lib/constants"
-import { ArrowUpRight, Grid3X3, BarChart3, FileText } from "lucide-react"
+import { ArrowUpRight, Grid3X3, BarChart3, FileText, MapPin } from "lucide-react"
 
 export default async function ClientDetailPage(props: { params: Promise<{ clientId: string }> }) {
   const { clientId } = await props.params
@@ -44,6 +44,14 @@ export default async function ClientDetailPage(props: { params: Promise<{ client
       icon: FileText,
       color: "text-amber-400",
       bg: "bg-amber-500/10",
+    },
+    {
+      title: "Local SEO",
+      description: "GBP status, citations, map pack rankings, and local competitors",
+      href: APP_ROUTES.LOCAL_SEO_CLIENT(clientId),
+      icon: MapPin,
+      color: "text-blue-400",
+      bg: "bg-blue-500/10",
     },
   ]
 
@@ -92,7 +100,7 @@ export default async function ClientDetailPage(props: { params: Promise<{ client
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {modules.map((mod) => {
           const Icon = mod.icon
           return (
