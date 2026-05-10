@@ -7,15 +7,20 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ArrowLeft, MapPin, Building2, CheckCircle2, AlertCircle, XCircle, Star, TrendingUp, Eye, Search, MousePointerClick } from "lucide-react"
-import { loadLocalSEO, type LocalSEOData } from "@/lib/local-seo-storage"
+import { ArrowLeft, MapPin, Building2, CheckCircle2, AlertCircle, XCircle, Star, TrendingUp, TrendingDown, Eye, Search, MousePointerClick, Minus } from "lucide-react"
+import { loadLocalSEO, getLocalSEORankHistory, type LocalSEOData, type LocalSEOHistoryPoint } from "@/lib/local-seo-storage"
 import { getAccountWithCity } from "@/lib/keywords-storage"
 import { cn } from "@/lib/utils"
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer
+} from "recharts"
 
 export default function LocalSEOAccountPage() {
   const params = useParams()
   const clientId = params.clientId as string
   const [data, setData] = useState<LocalSEOData | null>(null)
+  const [rankHistory, setRankHistory] = useState<LocalSEOHistoryPoint[]>([])
   const [accountName, setAccountName] = useState("")
   const [accountCity, setAccountCity] = useState("")
 
@@ -24,6 +29,7 @@ export default function LocalSEOAccountPage() {
     setAccountName(meta.name)
     setAccountCity(meta.city)
     setData(loadLocalSEO(clientId, meta.name, meta.city))
+    setRankHistory(getLocalSEORankHistory(clientId))
   }, [clientId])
 
   if (!data) return null
@@ -61,7 +67,16 @@ export default function LocalSEOAccountPage() {
             <CardTitle className="text-xs text-zinc-400 flex items-center gap-1"><MapPin className="h-3.5 w-3.5 text-[#FF6B00]" />Map Pack Rank</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-bold text-[#FF6B00]">#{data.mapPackRank}</p>
+            <div className="flex items-center gap-2">
+              <p className="text-lg font-bold text-[#FF6B00]">#{data.mapPackRank}</p>
+              {rankHistory.length >= 2 && (() => {
+                const first = rankHistory[0].mapPackRank
+                const last = rankHistory[rankHistory.length - 1].mapPackRank
+                if (last < first) return <span className="flex items-center gap-0.5 text-[10px] text-emerald-400"><TrendingUp className="h-3 w-3" />+{first - last}</span>
+                if (last > first) return <span className="flex items-center gap-0.5 text-[10px] text-red-400"><TrendingDown className="h-3 w-3" />-{last - first}</span>
+                return <Minus className="h-3 w-3 text-zinc-500" />
+              })()}
+            </div>
             <p className="text-[10px] text-zinc-600">{data.localKeywordsRanked} local keywords ranked</p>
           </CardContent>
         </Card>
@@ -99,6 +114,41 @@ export default function LocalSEOAccountPage() {
           <CardContent><p className="text-2xl font-bold">{data.weeklyGBPActions.toLocaleString()}</p></CardContent>
         </Card>
       </div>
+
+      {rankHistory.length >= 2 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-[#FF6B00]" />
+              Map Pack Rank History
+            </CardTitle>
+            <CardDescription>Daily rank position over time (lower is better)</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={rankHistory} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="rankGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#FF6B00" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#FF6B00" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
+                  <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#a1a1aa" }} tickFormatter={(d) => new Date(d).toLocaleDateString(undefined, { month: "short", day: "numeric" })} />
+                  <YAxis domain={[0, "auto"]} reversed tick={{ fontSize: 11, fill: "#a1a1aa" }} tickFormatter={(v) => `#${v}`} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: "#18181b", border: "1px solid #27272a", borderRadius: "8px", fontSize: "12px" }}
+                    formatter={(value: unknown) => [`#${value}`, "Rank"]}
+                    labelFormatter={(label) => new Date(label).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}
+                  />
+                  <Area type="monotone" dataKey="mapPackRank" stroke="#FF6B00" fill="url(#rankGradient)" strokeWidth={2} dot={false} activeDot={{ r: 4, fill: "#FF6B00" }} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>

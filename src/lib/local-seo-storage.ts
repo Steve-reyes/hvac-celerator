@@ -1,4 +1,5 @@
 const LOCAL_KEY = "hvac-local-seo"
+const LOCAL_HISTORY_KEY = "hvac-local-seo-history"
 
 export interface LocalSEOData {
   gbpVerified: boolean
@@ -17,6 +18,11 @@ export interface LocalSEOData {
   weeklyGBPViews: number
   weeklyGBPSearches: number
   weeklyGBPActions: number
+}
+
+export interface LocalSEOHistoryPoint {
+  date: string
+  mapPackRank: number
 }
 
 const DIRECTORIES = [
@@ -73,9 +79,45 @@ export function generateLocalSEO(accountId: string, name: string, city: string):
 export function loadLocalSEO(accountId: string, name: string, city: string): LocalSEOData {
   if (typeof window === "undefined") return generateLocalSEO(accountId, name, city)
   const all = JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}")
-  if (all[accountId]) return all[accountId]
+  if (all[accountId]) {
+    saveLocalSEOSnapshot(accountId, all[accountId].mapPackRank)
+    return all[accountId]
+  }
   const data = generateLocalSEO(accountId, name, city)
   all[accountId] = data
   localStorage.setItem(LOCAL_KEY, JSON.stringify(all))
+  saveLocalSEOSnapshot(accountId, data.mapPackRank)
   return data
+}
+
+function loadLocalSEOHistory(accountId: string): LocalSEOHistoryPoint[] {
+  if (typeof window === "undefined") return []
+  const all = JSON.parse(localStorage.getItem(LOCAL_HISTORY_KEY) || "{}")
+  return all[accountId] || []
+}
+
+function saveLocalSEOHistory(accountId: string, history: LocalSEOHistoryPoint[]) {
+  const all = JSON.parse(localStorage.getItem(LOCAL_HISTORY_KEY) || "{}")
+  all[accountId] = history
+  localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(all))
+}
+
+function saveLocalSEOSnapshot(accountId: string, mapPackRank: number) {
+  const today = new Date().toISOString().split("T")[0]
+  const history = loadLocalSEOHistory(accountId)
+  const existing = history.findIndex((h) => h.date === today)
+  if (existing >= 0) {
+    history[existing].mapPackRank = mapPackRank
+  } else {
+    history.push({ date: today, mapPackRank })
+  }
+  history.sort((a, b) => a.date.localeCompare(b.date))
+  saveLocalSEOHistory(accountId, history)
+}
+
+export function getLocalSEORankHistory(accountId: string): LocalSEOHistoryPoint[] {
+  if (typeof window === "undefined") return []
+  const history = loadLocalSEOHistory(accountId)
+  history.sort((a, b) => a.date.localeCompare(b.date))
+  return history
 }
